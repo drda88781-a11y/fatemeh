@@ -425,6 +425,403 @@
         }
 
         /* ==========================================================================
+           5.5. Cassette Mixtape & Shared Playlist
+           ========================================================================== */
+        .mixtape-section {
+            position: relative;
+            z-index: 10;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 5.5rem 1.5rem;
+        }
+
+        .cassette-card {
+            max-width: 460px;
+            margin: 0 auto 2.5rem;
+            background: linear-gradient(135deg, rgba(25, 20, 27, 0.95), rgba(12, 10, 14, 0.98));
+            border: 1px solid rgba(255, 127, 174, 0.45);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 127, 174, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cassette-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff7fae, transparent);
+        }
+
+        .cassette-top-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--accent-pink);
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed rgba(255, 127, 174, 0.25);
+            padding-bottom: 0.5rem;
+        }
+
+        .cassette-window {
+            background: rgba(8, 6, 9, 0.88);
+            border: 1px solid rgba(255, 127, 174, 0.35);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .cassette-spool {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff 15%, #ff7fae 25%, #18141c 65%);
+            border: 2px dashed rgba(255, 127, 174, 0.6);
+            flex-shrink: 0;
+        }
+
+        .cassette-spool.spinning {
+            animation: spinSpool 4s linear infinite;
+        }
+
+        @keyframes spinSpool {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cassette-tape-view {
+            flex: 1;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .cassette-tape-text {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            text-shadow: 0 0 12px rgba(255, 127, 174, 0.6);
+        }
+
+        .cassette-bottom-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Playlist Tracks List */
+        .playlist-container {
+            max-width: 640px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .playlist-track-row {
+            background: rgba(20, 17, 23, 0.8);
+            border: 1px solid rgba(255, 127, 174, 0.22);
+            border-radius: 14px;
+            padding: 0.95rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .playlist-track-row:hover {
+            border-color: var(--accent-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 127, 174, 0.25);
+        }
+
+        .playlist-track-row.is-current {
+            border-color: var(--accent-pink);
+            background: rgba(255, 127, 174, 0.12);
+            box-shadow: 0 0 20px rgba(255, 127, 174, 0.35);
+        }
+
+        .track-info-side {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 127, 174, 0.15);
+            border: 1px solid var(--accent-pink);
+            color: var(--accent-pink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .playlist-track-row:hover .track-play-btn,
+        .playlist-track-row.is-current .track-play-btn {
+            background: var(--accent-pink);
+            color: #09070a;
+        }
+
+        .track-text-group {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .track-title {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: #fff;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-memo {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin: 0.25rem 0 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Vault Trigger Button */
+        .btn-open-vault {
+            background: transparent;
+            border: 1px solid var(--accent-pink);
+            color: var(--accent-pink);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 127, 174, 0.15);
+        }
+
+        .btn-open-vault:hover {
+            background: var(--accent-pink);
+            color: #09070a;
+            transform: scale(1.04);
+            box-shadow: 0 6px 25px rgba(255, 127, 174, 0.45);
+        }
+
+        /* Vault Modal Styles */
+        .vault-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(9, 7, 10, 0.93);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .vault-modal.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .vault-card {
+            background: #141117;
+            border: 1px solid rgba(255, 127, 174, 0.35);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 520px;
+            padding: 1.85rem;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(255, 127, 174, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .vault-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 127, 174, 0.15);
+            padding-bottom: 1rem;
+        }
+
+        .vault-title {
+            font-family: var(--font-serif);
+            font-size: 1.45rem;
+            color: #fff;
+            margin: 0;
+        }
+
+        .vault-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin: 0.25rem 0 0;
+        }
+
+        .vault-close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .vault-close-btn:hover {
+            background: var(--accent-pink);
+            color: #09070a;
+        }
+
+        .vault-tabs {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            background: rgba(9, 7, 10, 0.6);
+            padding: 0.3rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-pink-subtle);
+        }
+
+        .vault-tab-btn {
+            flex: 1;
+            padding: 0.6rem 0.8rem;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .vault-tab-btn.active {
+            background: var(--accent-pink);
+            color: #09070a;
+            font-weight: 700;
+        }
+
+        .vault-form-group {
+            margin-bottom: 1.25rem;
+            text-align: right;
+        }
+
+        .vault-label {
+            display: block;
+            font-size: 0.88rem;
+            color: #ddd;
+            margin-bottom: 0.4rem;
+        }
+
+        .vault-input, .vault-textarea {
+            width: 100%;
+            background: rgba(9, 7, 10, 0.8);
+            border: 1px solid var(--border-pink-subtle);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .vault-input:focus, .vault-textarea:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 12px rgba(255, 127, 174, 0.25);
+        }
+
+        .vault-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .vault-file-input {
+            width: 100%;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .vault-btn-submit {
+            width: 100%;
+            background: var(--accent-pink);
+            color: #09070a;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .vault-btn-submit:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 127, 174, 0.45);
+        }
+
+        .vault-status-msg {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--accent-pink);
+            margin-top: 0.75rem;
+            min-height: 20px;
+        }
+
+        .vault-preview-img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 10px;
+            border: 1px solid var(--accent-pink);
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
            6. Subtle Observations (Delicate Pink Separator Lines, No Cards)
            ========================================================================== */
         .notes-list {
@@ -1486,6 +1883,54 @@
             <div id="albumContainer" class="album-masonry">
                 <!-- Injected via JavaScript from albumPhotos array -->
             </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn-open-vault" onclick="openVaultModal('photo')" aria-label="افزودن عکس جدید به آلبوم">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    <span>افزودن عکس جدید به آلبوم</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 4.5. Shared Cassette Mixtape (Our Two-Person Playlist) -->
+        <section id="secMixtape" class="mixtape-section" data-bg="mirror" aria-label="پلی‌لیست و کاست خاطرات دونفره">
+            <h2 class="section-title">کاست خاطرات دونفره‌ی ما</h2>
+            <p class="hero-statement" style="font-size: 1rem; margin-bottom: 2rem;">
+                آهنگ‌هایی که هر کدام بوی یک لحظه از این ماه‌ها را می‌دهند؛ لمس کنید تا با هم گوش دهیم:
+            </p>
+
+            <!-- Vintage Glass Cassette Player Widget -->
+            <div class="cassette-card">
+                <div class="cassette-top-label">
+                    <span class="cassette-brand">OUR MIXTAPE • A SIDE</span>
+                    <span class="cassette-date">از ۸ مهر تا همیشه</span>
+                </div>
+                <div class="cassette-window">
+                    <div class="cassette-spool spool-left" id="spoolLeft"></div>
+                    <div class="cassette-tape-view">
+                        <span id="cassetteNowPlayingText" class="cassette-tape-text">در واقع — امیر تتلو</span>
+                    </div>
+                    <div class="cassette-spool spool-right" id="spoolRight"></div>
+                </div>
+                <div class="cassette-bottom-badge">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="#ff7fae"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <span>برای علیرضا و فاطمه</span>
+                </div>
+            </div>
+
+            <!-- Playlist Tracks List -->
+            <div class="playlist-container" id="playlistContainer">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+
+            <!-- Add to Playlist CTA Button -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn-open-vault" onclick="openVaultModal('song')" aria-label="افزودن آهنگ جدید به کاست">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                    <span>افزودن آهنگ جدید به کاست خاطرات</span>
+                </button>
+            </div>
         </section>
 
         <!-- 5. Subtle Observations (Pure text + pink dividers) -->
@@ -1643,6 +2088,85 @@
     </main>
 
     <!-- ==========================================================================
+         10.5 Secret Vault Modal (Password: 0807 / ۸ مهر) - Add Songs & Photos
+         ========================================================================== -->
+    <div id="vaultModal" class="vault-modal" role="dialog" aria-modal="true" aria-label="صندوقچه اختصاصی دونفره">
+        <div class="vault-card">
+            <div class="vault-header">
+                <div>
+                    <h3 class="vault-title">صندوقچه اختصاصی دونفره</h3>
+                    <p class="vault-subtitle">افزودن آهنگ و خاطره به پلی‌لیست و آلبوم مشترک</p>
+                </div>
+                <button class="vault-close-btn" onclick="closeVaultModal()" aria-label="بستن صندوقچه">&times;</button>
+            </div>
+
+            <!-- Lock Screen (Anniversary Date Password: 0807 / ۸ مهر) -->
+            <div id="vaultLockScreen">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(255,127,174,0.1); border: 1px solid var(--accent-pink); margin-bottom: 0.8rem;">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="#ff7fae">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                    </div>
+                    <p style="font-size: 0.95rem; color: #ddd; margin: 0 0 0.4rem;">رمز ورود به صندوقچه خاطرات</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">(رمز: تاریخ آغاز آشنایی‌مان — مثلاً 0807 یا ۸ مهر)</p>
+                </div>
+                <div class="vault-form-group">
+                    <input type="password" id="vaultPasswordInput" class="vault-input" placeholder="رمز ۴ رقمی یا متنی (مثلاً 0807)" autocomplete="off" onkeydown="if(event.key==='Enter') verifyVaultPassword()">
+                </div>
+                <button type="button" class="vault-btn-submit" onclick="verifyVaultPassword()">باز کردن قفل صندوقچه</button>
+                <div id="vaultLockStatus" class="vault-status-msg"></div>
+            </div>
+
+            <!-- Unlocked Content Screen (Tabs for Song & Photo) -->
+            <div id="vaultContentScreen" style="display: none;">
+                <div class="vault-tabs">
+                    <button id="tabBtnSong" class="vault-tab-btn active" onclick="switchVaultTab('song')">🎵 افزودن آهنگ به کاست</button>
+                    <button id="tabBtnPhoto" class="vault-tab-btn" onclick="switchVaultTab('photo')">📷 افزودن عکس به آلبوم</button>
+                </div>
+
+                <!-- Form 1: Add Song to Mixtape -->
+                <div id="vaultSongForm">
+                    <div class="vault-form-group">
+                        <label class="vault-label">نام آهنگ:</label>
+                        <input type="text" id="vaultSongTitle" class="vault-input" placeholder="مثلاً: نوازش، قسم، ماه من...">
+                    </div>
+                    <div class="vault-form-group">
+                        <label class="vault-label">نام خواننده یا هنرمند:</label>
+                        <input type="text" id="vaultSongArtist" class="vault-input" placeholder="مثلاً: تتلو، شادمهر، معین...">
+                    </div>
+                    <div class="vault-form-group">
+                        <label class="vault-label">انتخاب فایل صوتی (از گوشی/سیستم) یا وارد کردن لینک مستقیم:</label>
+                        <input type="file" id="vaultSongFile" accept="audio/*" class="vault-file-input" style="margin-bottom: 0.5rem;" onchange="handleSongFileChosen(event)">
+                        <input type="url" id="vaultSongUrl" class="vault-input" placeholder="یا لینک مستقیم موزیک (https://.../music.mp3)">
+                    </div>
+                    <div class="vault-form-group">
+                        <label class="vault-label">یادداشت یا خاطره دونفره این آهنگ:</label>
+                        <textarea id="vaultSongMemo" class="vault-textarea" placeholder="مثلاً: آهنگی که در اولین بارون پاییزی با هم گوش دادیم..."></textarea>
+                    </div>
+                    <button type="button" class="vault-btn-submit" onclick="submitNewSong()">افزودن آهنگ به کاست خاطرات</button>
+                </div>
+
+                <!-- Form 2: Add Photo to Masonry Album -->
+                <div id="vaultPhotoForm" style="display: none;">
+                    <div class="vault-form-group">
+                        <label class="vault-label">انتخاب عکس از گوشی یا سیستم:</label>
+                        <input type="file" id="vaultPhotoFile" accept="image/*" class="vault-file-input" onchange="previewVaultPhoto(event)">
+                        <img id="vaultPhotoPreview" class="vault-preview-img" style="display: none; margin-top: 0.8rem;" alt="پیش‌نمایش عکس">
+                    </div>
+                    <div class="vault-form-group">
+                        <label class="vault-label">توضیح یا کپشن عاشقانه این قاب:</label>
+                        <textarea id="vaultPhotoCaption" class="vault-textarea" placeholder="مثلاً: قابی از یک عصر بهاری دونفره..."></textarea>
+                    </div>
+                    <button type="button" class="vault-btn-submit" onclick="submitNewPhoto()">افزودن عکس به آلبوم خاطرات</button>
+                </div>
+
+                <div id="vaultGlobalStatus" class="vault-status-msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
          11. Fullscreen Lightbox Modal (44px Close Button, Esc Support)
          ========================================================================== -->
     <div id="lightboxModal" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="نمایش تصویر در ابعاد بزرگ" onclick="closeLightbox()">
@@ -1727,9 +2251,9 @@
          ========================================================================== -->
     <script>
         // ==========================================================================
-        // لیست عکس‌های آلبوم (به راحتی می‌توانید عکس جدید اضافه یا کم کنید)
+        // 1. عکس‌های آلبوم مشترک (با امکان ذخیره عکس‌های جدید در حافظه مرورگر)
         // ==========================================================================
-        const albumPhotos = [
+        const baseAlbumPhotos = [
             {
                 src: 'assets/photo_sea.jpg',
                 alt: 'پرتره فاطمه با گل‌های بابونه در امتداد دریا',
@@ -1752,27 +2276,50 @@
             }
         ];
 
-        // 1. Render Album Items to Masonry Grid
-        const albumContainer = document.getElementById('albumContainer');
-        albumPhotos.forEach((item, index) => {
-            const itemWrap = document.createElement('div');
-            itemWrap.className = 'album-item';
+        function getStoredAlbumPhotos() {
+            try {
+                return JSON.parse(localStorage.getItem('shared_album_photos') || '[]');
+            } catch(e) {
+                return [];
+            }
+        }
 
-            const btn = document.createElement('button');
-            btn.className = 'album-thumb-btn';
-            btn.setAttribute('aria-label', `مشاهده قاب ${index + 1}: ${item.alt}`);
-            btn.onclick = () => openLightbox(item.src, item.caption, item.alt);
+        function saveStoredAlbumPhotos(photos) {
+            try {
+                localStorage.setItem('shared_album_photos', JSON.stringify(photos));
+            } catch(e) {
+                console.warn('Storage quota issue', e);
+            }
+        }
 
-            const img = document.createElement('img');
-            img.src = item.src;
-            img.alt = item.alt;
-            img.loading = 'lazy';
-            img.className = 'album-thumb-img';
+        function renderAlbum() {
+            const albumContainer = document.getElementById('albumContainer');
+            if (!albumContainer) return;
+            albumContainer.innerHTML = '';
+            const userPhotos = getStoredAlbumPhotos();
+            const allPhotos = [...baseAlbumPhotos, ...userPhotos];
 
-            btn.appendChild(img);
-            itemWrap.appendChild(btn);
-            albumContainer.appendChild(itemWrap);
-        });
+            allPhotos.forEach((item, index) => {
+                const itemWrap = document.createElement('div');
+                itemWrap.className = 'album-item';
+
+                const btn = document.createElement('button');
+                btn.className = 'album-thumb-btn';
+                btn.setAttribute('aria-label', `مشاهده قاب ${index + 1}: ${item.alt || ''}`);
+                btn.onclick = () => openLightbox(item.src, item.caption, item.alt);
+
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.alt = item.alt || 'عکس خاطره مشترک';
+                img.loading = 'lazy';
+                img.className = 'album-thumb-img';
+
+                btn.appendChild(img);
+                itemWrap.appendChild(btn);
+                albumContainer.appendChild(itemWrap);
+            });
+        }
+        renderAlbum();
 
         // 2. Fullscreen Lightbox logic (44px button & ESC key)
         const modal = document.getElementById('lightboxModal');
@@ -1794,12 +2341,361 @@
             }
         }
 
+        // ==========================================================================
+        // 2.5 موتور پلی‌لیست و کاست خاطرات دونفره (Shared Cassette Mixtape)
+        // ==========================================================================
+        const defaultPlaylist = [
+            {
+                id: 'track_default_1',
+                title: 'در واقع',
+                artist: 'امیر تتلو',
+                src: 'assets/music.mp3',
+                memo: 'آهنگ روزهای آشنایی‌مان از ۸ مهر تا عید',
+                isDefault: true
+            }
+        ];
+
+        let activeTrackIndex = 0;
+        let currentPlaylist = [];
+
+        function getStoredPlaylist() {
+            try {
+                return JSON.parse(localStorage.getItem('shared_mixtape_playlist') || '[]');
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function saveStoredPlaylist(tracks) {
+            try {
+                localStorage.setItem('shared_mixtape_playlist', JSON.stringify(tracks));
+            } catch(e) {}
+        }
+
+        function initPlaylist() {
+            const userTracks = getStoredPlaylist();
+            currentPlaylist = [...defaultPlaylist, ...userTracks];
+            renderPlaylist();
+        }
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlistContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const isAudioPlaying = (typeof audio !== 'undefined' && !audio.paused);
+
+            currentPlaylist.forEach((track, idx) => {
+                const isCurrent = (idx === activeTrackIndex);
+                const row = document.createElement('div');
+                row.className = 'playlist-track-row' + (isCurrent ? ' active' : '');
+                row.setAttribute('data-track-index', idx);
+
+                const isThisPlaying = isCurrent && isAudioPlaying;
+
+                row.innerHTML = `
+                    <div class="track-left-info">
+                        <span class="track-number">${idx + 1}</span>
+                        <div class="track-text-group">
+                            <h4 class="track-title">${escapeHtml(track.title)}</h4>
+                            <p class="track-artist">${escapeHtml(track.artist)}${track.memo ? ' • ' + escapeHtml(track.memo) : ''}</p>
+                        </div>
+                    </div>
+                    <button class="track-play-btn" aria-label="پخش یا توقف ${escapeHtml(track.title)}" onclick="handleTrackClick(event, ${idx})">
+                        <svg viewBox="0 0 24 24" style="${isThisPlaying ? 'display:none;' : ''}">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg viewBox="0 0 24 24" style="${isThisPlaying ? '' : 'display:none;'}">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                    </button>
+                `;
+
+                row.addEventListener('click', (e) => {
+                    if (e.target.closest('.track-play-btn')) return;
+                    handleTrackClick(e, idx);
+                });
+
+                container.appendChild(row);
+            });
+        }
+
+        function handleTrackClick(e, idx) {
+            e.stopPropagation();
+            if (idx === activeTrackIndex) {
+                togglePlayMusic();
+            } else {
+                playTrackIndex(idx);
+            }
+        }
+
+        function playTrackIndex(idx) {
+            if (idx < 0 || idx >= currentPlaylist.length) return;
+            activeTrackIndex = idx;
+            const track = currentPlaylist[idx];
+
+            const nowPlayingText = document.getElementById('cassetteNowPlayingText');
+            if (nowPlayingText) {
+                nowPlayingText.textContent = track.title + ' — ' + track.artist;
+            }
+
+            // Update mini lyrics bar / disc if available
+            const lyricsHeaderTitle = document.querySelector('.lyrics-title-group h3');
+            const lyricsHeaderSub = document.querySelector('.lyrics-title-group p');
+            if (lyricsHeaderTitle) lyricsHeaderTitle.textContent = track.title;
+            if (lyricsHeaderSub) lyricsHeaderSub.textContent = track.artist + ' — برای فاطمه';
+
+            audio.src = track.src;
+            audio.play().then(() => {
+                syncPlayStateUI(true);
+            }).catch(() => {
+                showMusicToast('خطا در پخش آهنگ');
+                syncPlayStateUI(false);
+            });
+
+            renderPlaylist();
+        }
+
+        // ==========================================================================
+        // 2.6 منطق صندوقچه رمزگذاری شده دونفره (Secret Vault: 0807 / ۸ مهر)
+        // ==========================================================================
+        let selectedSongDataUrl = '';
+        let selectedPhotoCompressedUrl = '';
+
+        function openVaultModal(tab) {
+            const vModal = document.getElementById('vaultModal');
+            if (!vModal) return;
+            vModal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+
+            const isUnlocked = sessionStorage.getItem('vault_unlocked') === 'true';
+            const lockScreen = document.getElementById('vaultLockScreen');
+            const contentScreen = document.getElementById('vaultContentScreen');
+
+            if (isUnlocked) {
+                lockScreen.style.display = 'none';
+                contentScreen.style.display = 'block';
+                switchVaultTab(tab || 'song');
+            } else {
+                lockScreen.style.display = 'block';
+                contentScreen.style.display = 'none';
+                const pwInput = document.getElementById('vaultPasswordInput');
+                if (pwInput) {
+                    pwInput.value = '';
+                    setTimeout(() => pwInput.focus(), 300);
+                }
+            }
+        }
+
+        function closeVaultModal() {
+            const vModal = document.getElementById('vaultModal');
+            if (!vModal) return;
+            vModal.classList.remove('is-open');
+            if (!document.body.classList.contains('envelope-locked')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function verifyVaultPassword() {
+            const input = document.getElementById('vaultPasswordInput');
+            const status = document.getElementById('vaultLockStatus');
+            const rawVal = (input.value || '').trim();
+            const cleanVal = rawVal.replace(/[\/\-\s]/g, '').toLowerCase();
+
+            // Accepted keys: 0807, 807, 8مهر, ۰۸۰۷, ۸مهر, 8mehr, etc.
+            const validKeys = ['0807', '807', '8مهر', '۸مهر', '۰۸۰۷', '۸۰۷', '8mehr', 'mehr8'];
+            const isPersianMatch = rawVal.includes('مهر') && (rawVal.includes('8') || rawVal.includes('۸'));
+
+            if (validKeys.includes(cleanVal) || isPersianMatch) {
+                sessionStorage.setItem('vault_unlocked', 'true');
+                status.style.color = '#79d7be';
+                status.textContent = 'رمز تایید شد؛ ورود به صندوقچه خاطرات...';
+                setTimeout(() => {
+                    status.textContent = '';
+                    document.getElementById('vaultLockScreen').style.display = 'none';
+                    document.getElementById('vaultContentScreen').style.display = 'block';
+                    switchVaultTab('song');
+                }, 500);
+            } else {
+                status.style.color = '#ff6b8b';
+                status.textContent = 'رمز نادرست است. (راهنما: تاریخ آغاز آشنایی‌مان)';
+                setTimeout(() => {
+                    if (status.textContent.includes('نادرست')) status.textContent = '';
+                }, 3000);
+            }
+        }
+
+        function switchVaultTab(tab) {
+            const tabSong = document.getElementById('tabBtnSong');
+            const tabPhoto = document.getElementById('tabBtnPhoto');
+            const formSong = document.getElementById('vaultSongForm');
+            const formPhoto = document.getElementById('vaultPhotoForm');
+            const globalStatus = document.getElementById('vaultGlobalStatus');
+            if (globalStatus) globalStatus.textContent = '';
+
+            if (tab === 'photo') {
+                tabSong.classList.remove('active');
+                tabPhoto.classList.add('active');
+                formSong.style.display = 'none';
+                formPhoto.style.display = 'block';
+            } else {
+                tabSong.classList.add('active');
+                tabPhoto.classList.remove('active');
+                formSong.style.display = 'block';
+                formPhoto.style.display = 'none';
+            }
+        }
+
+        function handleSongFileChosen(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedSongDataUrl = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function submitNewSong() {
+            const title = (document.getElementById('vaultSongTitle').value || '').trim();
+            const artist = (document.getElementById('vaultSongArtist').value || '').trim();
+            const urlInput = (document.getElementById('vaultSongUrl').value || '').trim();
+            const memo = (document.getElementById('vaultSongMemo').value || '').trim();
+            const status = document.getElementById('vaultGlobalStatus');
+
+            if (!title) {
+                status.style.color = '#ff6b8b';
+                status.textContent = 'لطفاً نام آهنگ را وارد کنید';
+                return;
+            }
+
+            const songSrc = selectedSongDataUrl || urlInput;
+            if (!songSrc) {
+                status.style.color = '#ff6b8b';
+                status.textContent = 'لطفاً فایل صوتی را انتخاب کرده یا لینک مستقیم موزیک را وارد کنید';
+                return;
+            }
+
+            const newTrack = {
+                id: 'track_' + Date.now(),
+                title: title,
+                artist: artist || 'انتخاب مشترک',
+                src: songSrc,
+                memo: memo || 'افزوده شده به کاست خاطرات',
+                timestamp: Date.now()
+            };
+
+            const userTracks = getStoredPlaylist();
+            userTracks.push(newTrack);
+            saveStoredPlaylist(userTracks);
+
+            currentPlaylist = [...defaultPlaylist, ...userTracks];
+            renderPlaylist();
+
+            status.style.color = '#79d7be';
+            status.textContent = 'آهنگ جدید با موفقیت به کاست خاطرات افزوده شد ✨';
+
+            // Reset fields
+            document.getElementById('vaultSongTitle').value = '';
+            document.getElementById('vaultSongArtist').value = '';
+            document.getElementById('vaultSongUrl').value = '';
+            document.getElementById('vaultSongMemo').value = '';
+            document.getElementById('vaultSongFile').value = '';
+            selectedSongDataUrl = '';
+
+            setTimeout(() => {
+                closeVaultModal();
+                status.textContent = '';
+                const sec = document.getElementById('secMixtape');
+                if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+            }, 1400);
+        }
+
+        function previewVaultPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const preview = document.getElementById('vaultPhotoPreview');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    const maxW = 1200;
+                    const maxH = 1200;
+                    let w = tempImg.width;
+                    let h = tempImg.height;
+                    if (w > maxW || h > maxH) {
+                        if (w > h) {
+                            h = Math.round((h * maxW) / w);
+                            w = maxW;
+                        } else {
+                            w = Math.round((w * maxH) / h);
+                            h = maxH;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(tempImg, 0, 0, w, h);
+                    selectedPhotoCompressedUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+                    preview.src = selectedPhotoCompressedUrl;
+                    preview.style.display = 'block';
+                };
+                tempImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function submitNewPhoto() {
+            const caption = (document.getElementById('vaultPhotoCaption').value || '').trim();
+            const status = document.getElementById('vaultGlobalStatus');
+
+            if (!selectedPhotoCompressedUrl) {
+                status.style.color = '#ff6b8b';
+                status.textContent = 'لطفاً ابتدا یک عکس انتخاب کنید';
+                return;
+            }
+
+            const newPhoto = {
+                id: 'photo_' + Date.now(),
+                src: selectedPhotoCompressedUrl,
+                alt: 'عکس مشترک دونفره',
+                caption: caption || 'خاطره‌ای ثبت شده در آلبوم مشترک',
+                timestamp: Date.now()
+            };
+
+            const stored = getStoredAlbumPhotos();
+            stored.push(newPhoto);
+            saveStoredAlbumPhotos(stored);
+
+            renderAlbum();
+
+            status.style.color = '#79d7be';
+            status.textContent = 'عکس با موفقیت به آلبوم خاطرات افزوده شد 📷✨';
+
+            document.getElementById('vaultPhotoFile').value = '';
+            document.getElementById('vaultPhotoCaption').value = '';
+            document.getElementById('vaultPhotoPreview').style.display = 'none';
+            selectedPhotoCompressedUrl = '';
+
+            setTimeout(() => {
+                closeVaultModal();
+                status.textContent = '';
+                const sec = document.getElementById('secAlbum');
+                if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+            }, 1400);
+        }
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (modal && modal.classList.contains('active')) {
                     closeLightbox();
                 } else if (typeof lyricsModal !== 'undefined' && lyricsModal.classList.contains('is-open')) {
                     closeLyricsModal();
+                } else if (typeof closeVaultModal === 'function') {
+                    closeVaultModal();
                 }
             }
         });
@@ -2111,6 +3007,29 @@
                 vinylMiniDisc.classList.remove('spinning');
                 musicBtn.setAttribute('title', 'پخش موسیقی');
             }
+
+            // Sync Cassette Spools
+            const spoolL = document.getElementById('spoolLeft');
+            const spoolR = document.getElementById('spoolRight');
+            if (spoolL && spoolR) {
+                if (isPlaying) {
+                    spoolL.classList.add('spinning');
+                    spoolR.classList.add('spinning');
+                } else {
+                    spoolL.classList.remove('spinning');
+                    spoolR.classList.remove('spinning');
+                }
+            }
+
+            // Sync playlist rows UI
+            if (typeof renderPlaylist === 'function') {
+                renderPlaylist();
+            }
+        }
+
+        // Initialize Shared Mixtape Cassette Playlist
+        if (typeof initPlaylist === 'function') {
+            initPlaylist();
         }
 
         function togglePlayMusic() {
