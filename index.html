@@ -1747,6 +1747,314 @@
         }
 
         /* ==========================================================================
+           3.5 Live Heartbeat & Lifetime Elapsed Counter
+           ========================================================================== */
+        .heartbeat-section {
+            padding: 5rem 1.5rem;
+            text-align: center;
+        }
+
+        .heartbeat-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(18, 14, 21, 0.72);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 127, 174, 0.32);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 35px rgba(255, 127, 174, 0.12);
+        }
+
+        .heartbeat-icon-wrap {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heartbeat-svg {
+            width: 48px;
+            height: 48px;
+            fill: var(--accent-pink);
+            filter: drop-shadow(0 0 14px rgba(255, 127, 174, 0.75));
+            animation: realisticHeartPulse 1.25s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .heartbeat-wave-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 127, 174, 0.6);
+            animation: heartRadarWave 2.5s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .heartbeat-wave-ring.ring-2 {
+            animation-delay: 1.25s;
+        }
+
+        @keyframes realisticHeartPulse {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.22); }
+            28% { transform: scale(1.06); }
+            42% { transform: scale(1.28); }
+            70% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes heartRadarWave {
+            0% { transform: scale(0.6); opacity: 0.9; }
+            100% { transform: scale(2.4); opacity: 0; }
+        }
+
+        .heartbeat-metric-box {
+            background: rgba(9, 7, 10, 0.65);
+            border: 1px solid var(--border-pink-subtle);
+            border-radius: 18px;
+            padding: 1.5rem;
+            margin: 1.75rem 0 2rem;
+            position: relative;
+        }
+
+        .heartbeat-metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .heartbeat-big-number {
+            font-family: var(--font-serif);
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 127, 174, 0.45);
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+        }
+
+        .ecg-line-wrap {
+            margin-top: 0.8rem;
+            height: 28px;
+            overflow: hidden;
+            opacity: 0.85;
+        }
+
+        .ecg-line {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--accent-pink);
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: ecgSweep 3s linear infinite;
+        }
+
+        @keyframes ecgSweep {
+            0% { stroke-dashoffset: 600; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .heartbeat-breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hb-stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 127, 174, 0.18);
+            border-radius: 14px;
+            padding: 1rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hb-stat-num {
+            font-family: var(--font-serif);
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+        }
+
+        .hb-stat-unit {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .heartbeat-footer-note {
+            font-size: 0.85rem;
+            color: #c9b9cb;
+            font-style: italic;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           4.8 Celestial Star Map of 8 Mehr
+           ========================================================================== */
+        .starmap-section {
+            padding: 5rem 1.5rem;
+            text-align: center;
+        }
+
+        .starmap-frame {
+            max-width: 580px;
+            margin: 0 auto;
+            background: radial-gradient(circle at 50% 30%, #15111d 0%, #08060b 80%);
+            border: 1px solid rgba(255, 127, 174, 0.35);
+            border-radius: 28px;
+            padding: 2.5rem 1.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 40px rgba(255, 127, 174, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .starmap-sphere-wrap {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            max-width: 90vw;
+            max-height: 90vw;
+            margin: 1.5rem auto;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 127, 174, 0.45);
+            box-shadow: inset 0 0 50px rgba(9, 7, 10, 0.9), 0 0 30px rgba(255, 127, 174, 0.25);
+            overflow: hidden;
+            background: #050408;
+            cursor: crosshair;
+        }
+
+        .starmap-sphere-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            box-shadow: inset 0 0 25px rgba(255, 127, 174, 0.3);
+            pointer-events: none;
+        }
+
+        .starmap-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .starmap-ring-decor {
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.18);
+            pointer-events: none;
+        }
+
+        .starmap-axis-decor {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .starmap-axis-h {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,127,174,0.3), transparent);
+        }
+
+        .starmap-axis-v {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(255,127,174,0.3), transparent);
+        }
+
+        .starmap-plaque {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 127, 174, 0.22);
+            border-radius: 16px;
+        }
+
+        .starmap-plaque-title {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            color: #fff;
+            margin: 0 0 0.3rem;
+            letter-spacing: 0.02em;
+        }
+
+        .starmap-plaque-coords {
+            font-size: 0.8rem;
+            color: var(--accent-pink);
+            letter-spacing: 0.1em;
+            margin: 0 0 0.6rem;
+            direction: ltr;
+        }
+
+        .starmap-plaque-quote {
+            font-size: 0.88rem;
+            color: #d8c8d8;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .starmap-hint-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            background: rgba(255, 127, 174, 0.08);
+            padding: 0.4rem 0.85rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 127, 174, 0.2);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .starmap-hint-pill:hover {
+            background: rgba(255, 127, 174, 0.2);
+            color: #fff;
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 600px) {
+            .heartbeat-card {
+                padding: 2rem 1.25rem;
+            }
+            .heartbeat-big-number {
+                font-size: 2rem;
+            }
+            .hb-stat-num {
+                font-size: 1.35rem;
+            }
+            .starmap-sphere-wrap {
+                width: 270px;
+                height: 270px;
+            }
+        }
+
+        /* ==========================================================================
            12. Accessibility: prefers-reduced-motion
            ========================================================================== */
         @media (prefers-reduced-motion: reduce) {
@@ -1873,6 +2181,59 @@
             </div>
         </section>
 
+        <!-- 3.5. Live Heartbeat & Lifetime Elapsed Counter (تپش قلب و زمان دونفره) -->
+        <section id="secHeartbeat" class="heartbeat-section" data-bg="bw" aria-label="شمارنده تپش قلب و دقایق با هم بودن">
+            <div class="heartbeat-card">
+                <div class="heartbeat-icon-wrap" aria-hidden="true">
+                    <svg class="heartbeat-svg" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <div class="heartbeat-wave-ring"></div>
+                    <div class="heartbeat-wave-ring ring-2"></div>
+                </div>
+
+                <h2 class="section-title" style="margin-bottom: 0.5rem;">از ۸ مهر تا این ثانیه</h2>
+                <p class="hero-statement" style="font-size: 0.95rem; margin-bottom: 2rem;">
+                    لحظه‌به‌لحظه در کنار هم؛ هر نفس و هر تپش، روایتی از یک تصمیم همیشگی است:
+                </p>
+
+                <!-- Live Heartbeat Metric -->
+                <div class="heartbeat-metric-box">
+                    <span class="heartbeat-metric-label">تعداد تپش‌های قلب در این مسیر مشترک</span>
+                    <div id="liveHeartbeatCount" class="heartbeat-big-number">--</div>
+                    <div class="ecg-line-wrap" aria-hidden="true">
+                        <svg class="ecg-line" viewBox="0 0 500 40">
+                            <polyline points="0,20 80,20 100,20 110,5 120,35 130,10 140,25 150,20 230,20 250,20 260,5 270,35 280,10 290,25 300,20 380,20 400,20 410,5 420,35 430,10 440,25 450,20 500,20" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Elapsed Time Breakdown (Days, Hours, Minutes, Seconds) -->
+                <div class="heartbeat-breakdown-grid">
+                    <div class="hb-stat-card">
+                        <span id="hbDays" class="hb-stat-num">--</span>
+                        <span class="hb-stat-unit">روز</span>
+                    </div>
+                    <div class="hb-stat-card">
+                        <span id="hbHours" class="hb-stat-num">--</span>
+                        <span class="hb-stat-unit">ساعت</span>
+                    </div>
+                    <div class="hb-stat-card">
+                        <span id="hbMins" class="hb-stat-num">--</span>
+                        <span class="hb-stat-unit">دقیقه</span>
+                    </div>
+                    <div class="hb-stat-card">
+                        <span id="hbSecs" class="hb-stat-num">--</span>
+                        <span class="hb-stat-unit">ثانیه</span>
+                    </div>
+                </div>
+
+                <p class="heartbeat-footer-note">
+                    «هر ثانیه‌ای که می‌گذرد، پیوند ما عمیق‌تر از دیروز می‌شود.»
+                </p>
+            </div>
+        </section>
+
         <!-- 4. Photo Album (Masonry 2-columns with Lightbox) -->
         <section id="secAlbum" class="album-section" data-bg="sea" aria-label="آلبوم عکس‌های مستند">
             <h2 class="section-title">قاب‌های ماندگار</h2>
@@ -1929,6 +2290,40 @@
                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                     </svg>
                     <span>افزودن آهنگ جدید به کاست خاطرات</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 4.8. Celestial Star Map of 8 Mehr (شبی که جهان تغییر کرد) -->
+        <section id="secStarMap" class="starmap-section" data-bg="golden" aria-label="نقشه آسمان شب ۸ مهر">
+            <h2 class="section-title">آسمان شبِ آغاز ما</h2>
+            <p class="hero-statement" style="font-size: 1rem; margin-bottom: 2rem;">
+                تصویر دقیق صور فلکی و کهکشان بالای سرمان در شامگاه ۸ مهر؛ شبی که برای اولین‌بار هم‌کلام شدیم:
+            </p>
+
+            <div class="starmap-frame">
+                <div class="starmap-sphere-wrap" id="starMapSphereWrap" title="حرکت دهید تا ستاره‌ها بدرخشند">
+                    <canvas id="starMapCanvas" class="starmap-canvas" width="600" height="600"></canvas>
+                    <div class="starmap-ring-decor"></div>
+                    <div class="starmap-axis-decor">
+                        <div class="starmap-axis-h"></div>
+                        <div class="starmap-axis-v"></div>
+                    </div>
+                </div>
+
+                <div class="starmap-plaque">
+                    <h3 class="starmap-plaque-title">OUR NIGHT SKY • 8 MEHR</h3>
+                    <p class="starmap-plaque-coords">35.6892° N, 51.3890° E • TEHRAN</p>
+                    <p class="starmap-plaque-quote">
+                        «میلیاردها ستاره در کهکشان می‌درخشیدند، اما در میان آن‌همه بی‌کرانگی، زیباترین اتفاق جهان همان قراری بود که میان من و تو آغاز شد.»
+                    </p>
+                </div>
+
+                <button class="starmap-hint-pill" onclick="twinkleStarMapBonus()" aria-label="درخشش ستاره‌ها">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                        <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.2-6.3-4.6-6.3 4.6 2.3-7.2-6-4.6h7.6z"/>
+                    </svg>
+                    <span>لمس برای باران شهاب‌سنگ و درخشش کهکشان ✨</span>
                 </button>
             </div>
         </section>
@@ -2796,6 +3191,297 @@
         }
         updateCountdown();
         setInterval(updateCountdown, 1000);
+
+        // ==========================================================================
+        // 6.5 شمارنده تپش قلب و زمان دونفره (از ۸ مهر تا این ثانیه)
+        // ==========================================================================
+        const startMehrDate = new Date('2026-09-30T00:00:00+03:30').getTime();
+        const liveHeartbeatCount = document.getElementById('liveHeartbeatCount');
+        const hbDays = document.getElementById('hbDays');
+        const hbHours = document.getElementById('hbHours');
+        const hbMins = document.getElementById('hbMins');
+        const hbSecs = document.getElementById('hbSecs');
+
+        function updateHeartbeatCounter() {
+            if (!liveHeartbeatCount) return;
+            const now = Date.now();
+            const elapsed = Math.max(0, now - startMehrDate);
+
+            const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+            // Average resting human heart rate ~73 bpm = 1.2166 beats/sec
+            const totalBeats = Math.floor((elapsed / 1000) * 1.2166);
+
+            hbDays.textContent = days.toLocaleString('fa-IR');
+            hbHours.textContent = hours.toLocaleString('fa-IR', { minimumIntegerDigits: 2 });
+            hbMins.textContent = mins.toLocaleString('fa-IR', { minimumIntegerDigits: 2 });
+            hbSecs.textContent = secs.toLocaleString('fa-IR', { minimumIntegerDigits: 2 });
+
+            liveHeartbeatCount.textContent = totalBeats.toLocaleString('fa-IR') + ' تپش';
+        }
+        updateHeartbeatCounter();
+        setInterval(updateHeartbeatCounter, 1000);
+
+        // ==========================================================================
+        // 6.8 نقشه‌ی ستاره‌ای آسمان شب ۸ مهر (Celestial Star Map of 8 Mehr)
+        // ==========================================================================
+        (function initStarMap() {
+            const canvas = document.getElementById('starMapCanvas');
+            const sphereWrap = document.getElementById('starMapSphereWrap');
+            if (!canvas || !sphereWrap) return;
+
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const cx = width / 2;
+            const cy = height / 2;
+            const maxRadius = width / 2 - 12;
+
+            // Generate ~180 realistic stars within the circular celestial disc
+            const stars = [];
+            for (let i = 0; i < 180; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const r = Math.sqrt(Math.random()) * (maxRadius - 15);
+                const x = cx + r * Math.cos(angle);
+                const y = cy + r * Math.sin(angle);
+                const radius = Math.random() < 0.85 ? (Math.random() * 1.2 + 0.6) : (Math.random() * 2.2 + 1.4);
+                const baseAlpha = Math.random() * 0.6 + 0.35;
+                const twinkleSpeed = Math.random() * 0.04 + 0.015;
+                const colorTone = Math.random() < 0.25 ? '#ffc2d4' : (Math.random() < 0.5 ? '#fff3cf' : '#ffffff');
+                stars.push({ x, y, r, radius, baseAlpha, alpha: baseAlpha, twinkleSpeed, angleStep: Math.random() * Math.PI, colorTone });
+            }
+
+            // Real late September / early October northern hemisphere constellations
+            const constellations = [
+                // Ursa Major (دب اکبر)
+                {
+                    name: 'دب اکبر',
+                    stars: [
+                        { x: cx - 110, y: cy - 130 },
+                        { x: cx - 65,  y: cy - 145 },
+                        { x: cx - 25,  y: cy - 125 },
+                        { x: cx - 10,  y: cy - 80 },
+                        { x: cx - 55,  y: cy - 65 },
+                        { x: cx - 95,  y: cy - 70 },
+                        { x: cx - 145, y: cy - 50 }
+                    ],
+                    lines: [[0,1], [1,2], [2,3], [3,4], [4,5], [5,0], [5,6]]
+                },
+                // Cassiopeia (ذات‌الکرسی)
+                {
+                    name: 'ذات‌الکرسی',
+                    stars: [
+                        { x: cx + 75,  y: cy - 140 },
+                        { x: cx + 115, y: cy - 115 },
+                        { x: cx + 90,  y: cy - 80 },
+                        { x: cx + 135, y: cy - 55 },
+                        { x: cx + 165, y: cy - 75 }
+                    ],
+                    lines: [[0,1], [1,2], [2,3], [3,4]]
+                },
+                // Lyra with Vega (شلیاق / نسر واقع)
+                {
+                    name: 'شلیاق و نسر واقع',
+                    stars: [
+                        { x: cx - 30, y: cy + 30, primary: true }, // Vega
+                        { x: cx - 15, y: cy + 60 },
+                        { x: cx + 10, y: cy + 80 },
+                        { x: cx + 25, y: cy + 50 },
+                        { x: cx + 5,  y: cy + 35 }
+                    ],
+                    lines: [[0,1], [1,2], [2,3], [3,4], [4,0], [1,3]]
+                },
+                // Cygnus / Northern Cross (ماکیان)
+                {
+                    name: 'ماکیان (دجاجه)',
+                    stars: [
+                        { x: cx + 60, y: cy + 20, primary: true }, // Deneb
+                        { x: cx + 75, y: cy + 70 },
+                        { x: cx + 90, y: cy + 120 },
+                        { x: cx + 30, y: cy + 75 },
+                        { x: cx + 120,y: cy + 65 }
+                    ],
+                    lines: [[0,1], [1,2], [3,1], [1,4]]
+                }
+            ];
+
+            let mouseX = cx;
+            let mouseY = cy;
+            let targetMouseX = cx;
+            let targetMouseY = cy;
+            let shootingStars = [];
+
+            function addShootingStar() {
+                const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.3;
+                const startX = cx + (Math.random() - 0.5) * 200 - 100;
+                const startY = cy + (Math.random() - 0.5) * 200 - 100;
+                shootingStars.push({
+                    x: startX,
+                    y: startY,
+                    length: Math.random() * 70 + 60,
+                    speed: Math.random() * 9 + 10,
+                    angle: angle,
+                    opacity: 1,
+                    decay: Math.random() * 0.03 + 0.02
+                });
+            }
+
+            window.twinkleStarMapBonus = function() {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(addShootingStar, i * 250);
+                }
+                sphereWrap.style.boxShadow = 'inset 0 0 50px rgba(9, 7, 10, 0.9), 0 0 50px rgba(255, 127, 174, 0.6)';
+                setTimeout(() => {
+                    sphereWrap.style.boxShadow = 'inset 0 0 50px rgba(9, 7, 10, 0.9), 0 0 30px rgba(255, 127, 174, 0.25)';
+                }, 2000);
+            };
+
+            sphereWrap.addEventListener('mousemove', (e) => {
+                const rect = sphereWrap.getBoundingClientRect();
+                targetMouseX = ((e.clientX - rect.left) / rect.width) * width;
+                targetMouseY = ((e.clientY - rect.top) / rect.height) * height;
+            });
+
+            sphereWrap.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    const rect = sphereWrap.getBoundingClientRect();
+                    targetMouseX = ((e.touches[0].clientX - rect.left) / rect.width) * width;
+                    targetMouseY = ((e.touches[0].clientY - rect.top) / rect.height) * height;
+                }
+            }, { passive: true });
+
+            sphereWrap.addEventListener('click', () => {
+                addShootingStar();
+            });
+
+            function render() {
+                mouseX += (targetMouseX - mouseX) * 0.05;
+                mouseY += (targetMouseY - mouseY) * 0.05;
+                const offsetX = (mouseX - cx) * 0.035;
+                const offsetY = (mouseY - cy) * 0.035;
+
+                ctx.clearRect(0, 0, width, height);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(cx, cy, maxRadius, 0, Math.PI * 2);
+                ctx.clip();
+
+                const bgGrad = ctx.createRadialGradient(cx, cy, 10, cx, cy, maxRadius);
+                bgGrad.addColorStop(0, '#0c0a15');
+                bgGrad.addColorStop(0.5, '#07050d');
+                bgGrad.addColorStop(1, '#020104');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, width, height);
+
+                const neb1 = ctx.createRadialGradient(cx - 50, cy - 40, 0, cx - 50, cy - 40, 160);
+                neb1.addColorStop(0, 'rgba(255, 127, 174, 0.16)');
+                neb1.addColorStop(1, 'transparent');
+                ctx.fillStyle = neb1;
+                ctx.fillRect(0, 0, width, height);
+
+                const neb2 = ctx.createRadialGradient(cx + 70, cy + 60, 0, cx + 70, cy + 60, 140);
+                neb2.addColorStop(0, 'rgba(255, 215, 130, 0.12)');
+                neb2.addColorStop(1, 'transparent');
+                ctx.fillStyle = neb2;
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+                ctx.lineWidth = 1;
+                [0.35, 0.65, 0.92].forEach(ratio => {
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, maxRadius * ratio, 0, Math.PI * 2);
+                    ctx.stroke();
+                });
+
+                stars.forEach(s => {
+                    s.angleStep += s.twinkleSpeed;
+                    const dynamicAlpha = s.baseAlpha + Math.sin(s.angleStep) * 0.25;
+                    ctx.fillStyle = s.colorTone;
+                    ctx.globalAlpha = Math.max(0.15, Math.min(1, dynamicAlpha));
+                    ctx.beginPath();
+                    ctx.arc(s.x + offsetX, s.y + offsetY, s.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+
+                constellations.forEach(c => {
+                    ctx.strokeStyle = 'rgba(255, 182, 206, 0.32)';
+                    ctx.lineWidth = 1.2;
+                    ctx.setLineDash([3, 4]);
+
+                    c.lines.forEach(pair => {
+                        const p1 = c.stars[pair[0]];
+                        const p2 = c.stars[pair[1]];
+                        if (p1 && p2) {
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x + offsetX, p1.y + offsetY);
+                            ctx.lineTo(p2.x + offsetX, p2.y + offsetY);
+                            ctx.stroke();
+                        }
+                    });
+                    ctx.setLineDash([]);
+
+                    c.stars.forEach(st => {
+                        const sx = st.x + offsetX;
+                        const sy = st.y + offsetY;
+
+                        const glowRad = st.primary ? 12 : 7;
+                        const starGlow = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowRad);
+                        starGlow.addColorStop(0, st.primary ? 'rgba(255, 240, 248, 0.95)' : 'rgba(255, 215, 140, 0.85)');
+                        starGlow.addColorStop(0.4, st.primary ? 'rgba(255, 127, 174, 0.45)' : 'rgba(255, 200, 160, 0.3)');
+                        starGlow.addColorStop(1, 'transparent');
+                        ctx.fillStyle = starGlow;
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, glowRad, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, st.primary ? 2.8 : 2.0, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                });
+
+                for (let i = shootingStars.length - 1; i >= 0; i--) {
+                    const ss = shootingStars[i];
+                    ctx.save();
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${ss.opacity})`;
+                    ctx.lineWidth = 1.8;
+                    ctx.beginPath();
+                    ctx.moveTo(ss.x, ss.y);
+                    const tailX = ss.x - Math.cos(ss.angle) * ss.length;
+                    const tailY = ss.y - Math.sin(ss.angle) * ss.length;
+                    ctx.lineTo(tailX, tailY);
+                    ctx.stroke();
+
+                    ctx.fillStyle = `rgba(255, 192, 203, ${ss.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(ss.x, ss.y, 2.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+
+                    ss.x += Math.cos(ss.angle) * ss.speed;
+                    ss.y += Math.sin(ss.angle) * ss.speed;
+                    ss.opacity -= ss.decay;
+
+                    if (ss.opacity <= 0) {
+                        shootingStars.splice(i, 1);
+                    }
+                }
+
+                if (Math.random() < 0.003 && shootingStars.length < 2) {
+                    addShootingStar();
+                }
+
+                ctx.restore();
+                requestAnimationFrame(render);
+            }
+            render();
+        })();
 
         // 7. Epilogue Falling Pink Petals (Triggered once upon section entry)
         const petalsStage = document.getElementById('petalsStage');
