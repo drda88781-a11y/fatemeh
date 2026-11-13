@@ -1,31 +1,64 @@
 /**
  * FATEMEH - A Little Program for You ❤️
  * Cinematic Interactive Romantic Experience
+ * With Audio-Reactive Real-Time Glow Engine
  */
 
 (function () {
   'use strict';
 
-  // --- Audio State & Controller ---
+  // --- Audio State & Reactive Visualizer Controller ---
   const bgAudio = document.getElementById('bg-music');
   const audioToggleBtn = document.getElementById('audio-toggle-btn');
   let isAudioPlaying = false;
   let userInteracted = false;
 
+  // Web Audio API context & nodes
+  let audioContext = null;
+  let analyser = null;
+  let audioSource = null;
+  let frequencyData = null;
+  let audioEnergy = 0;
+
+  function initAudioReactive() {
+    if (audioContext) {
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      return;
+    }
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx || !bgAudio) return;
+      audioContext = new AudioCtx();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.82;
+
+      audioSource = audioContext.createMediaElementSource(bgAudio);
+      audioSource.connect(analyser);
+      analyser.connect(audioContext.destination);
+
+      frequencyData = new Uint8Array(analyser.frequencyBinCount);
+    } catch (e) {
+      console.warn('Audio reactive initialized with fallback simulation:', e);
+    }
+  }
+
   function initAudio() {
     if (!bgAudio) return;
     bgAudio.volume = 0.85;
 
-    // Try autoplay (may be blocked by browser policy until interaction)
+    // Try autoplay (may be deferred by browser until interaction)
     const promise = bgAudio.play();
     if (promise !== undefined) {
       promise
         .then(() => {
           isAudioPlaying = true;
           updateAudioUI(true);
+          initAudioReactive();
         })
         .catch(() => {
-          // Autoplay blocked, wait for user interaction
           isAudioPlaying = false;
           updateAudioUI(false);
         });
@@ -35,10 +68,14 @@
     const startAudioOnTouch = () => {
       if (!userInteracted) {
         userInteracted = true;
+        initAudioReactive();
         bgAudio.play()
           .then(() => {
             isAudioPlaying = true;
             updateAudioUI(true);
+            if (audioContext && audioContext.state === 'suspended') {
+              audioContext.resume();
+            }
           })
           .catch(() => {});
       }
@@ -52,6 +89,7 @@
       audioToggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         userInteracted = true;
+        initAudioReactive();
         if (isAudioPlaying) {
           bgAudio.pause();
           isAudioPlaying = false;
@@ -60,6 +98,9 @@
           bgAudio.play().then(() => {
             isAudioPlaying = true;
             updateAudioUI(true);
+            if (audioContext && audioContext.state === 'suspended') {
+              audioContext.resume();
+            }
           }).catch(err => console.log('Audio play failed:', err));
         }
       });
@@ -78,6 +119,30 @@
     }
   }
 
+  // Calculate normalized real-time audio energy
+  function getAudioEnergy(currentFrame) {
+    if (analyser && frequencyData && isAudioPlaying && !bgAudio.paused) {
+      try {
+        analyser.getByteFrequencyData(frequencyData);
+        let sum = 0;
+        const binCount = 16;
+        for (let i = 2; i < 2 + binCount; i++) {
+          sum += frequencyData[i];
+        }
+        const avg = sum / binCount;
+        return Math.min(avg / 155, 1);
+      } catch (err) {}
+    }
+
+    // High quality organic breathing simulation fallback
+    if (isAudioPlaying && !bgAudio.paused) {
+      const p1 = Math.sin(currentFrame * 0.05);
+      const p2 = Math.cos(currentFrame * 0.1);
+      return Math.max(0, 0.22 + 0.18 * p1 + 0.12 * p2);
+    }
+    return 0.04;
+  }
+
   // --- DOM Elements ---
   const openingScreen = document.getElementById('opening-screen');
   const startBtn = document.getElementById('start-btn');
@@ -93,6 +158,9 @@
   const msg3 = document.getElementById('console-msg-3');
 
   const climaxContainer = document.getElementById('climax-container');
+  const ambientBloom = document.querySelector('.ambient-glow-bloom');
+  const heartStage = document.querySelector('.heart-stage');
+  const orbitalRing1 = document.querySelector('.orbital-ring-1');
   const heartPath = document.getElementById('heart-path');
   const heartInner = document.getElementById('heart-inner');
   const calligraphySvg = document.getElementById('calligraphy-svg');
@@ -126,7 +194,6 @@ program.run()`;
   function highlightPython(code) {
     const lines = code.split('\n');
     return lines.map(line => {
-      // Escape HTML
       let formatted = line
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -144,7 +211,7 @@ program.run()`;
       // Class names
       formatted = formatted.replace(/\b(A_Little_Surprise)\b/g, '<span class="syn-class">$1</span>');
 
-      // Function definitions & calls
+      // Functions
       formatted = formatted.replace(/\b(__init__|run|create_a_little_happiness|send_a_heart)\b/g, '<span class="syn-func">$1</span>');
 
       return formatted;
@@ -178,11 +245,10 @@ program.run()`;
         codeContent.innerHTML = highlightPython(currentSlice) + '<span class="terminal-cursor"></span>';
         updateLineNumbers(currentSlice);
 
-        // Typing cadence: slight pauses after newlines & colons
         const char = pythonCode[charIndex - 1];
         let delay = 22 + Math.random() * 25;
-        if (char === '\n') delay = 90;
-        if (char === ':') delay = 120;
+        if (char === '\n') delay = 85;
+        if (char === ':') delay = 110;
 
         typingTimer = setTimeout(typeNextChar, delay);
       } else {
@@ -227,11 +293,14 @@ program.run()`;
 
   // --- Stage Transition: Opening to Terminal ---
   startBtn.addEventListener('click', () => {
-    // Start background audio if not started
+    initAudioReactive();
     if (bgAudio && bgAudio.paused) {
       bgAudio.play().then(() => {
         isAudioPlaying = true;
         updateAudioUI(true);
+        if (audioContext && audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
       }).catch(() => {});
     }
 
@@ -300,7 +369,6 @@ program.run()`;
       stroke.classList.add('animate');
     });
 
-    // Animate glowing pen tip along the main cursive path
     const mainStroke = document.getElementById('name-main-path');
     if (mainStroke && penTip) {
       penTip.style.opacity = '1';
@@ -313,12 +381,11 @@ program.run()`;
         const progress = Math.min(elapsed / duration, 1);
         const point = mainStroke.getPointAtLength(progress * pathLength);
 
-        // Convert SVG point coordinates to parent wrapper coordinates
         const svgRect = calligraphySvg.getBoundingClientRect();
         const wrapperRect = calligraphySvg.parentElement.getBoundingClientRect();
 
-        const scaleX = svgRect.width / 500; // SVG viewBox width is 500
-        const scaleY = svgRect.height / 160; // SVG viewBox height is 160
+        const scaleX = svgRect.width / 500;
+        const scaleY = svgRect.height / 160;
 
         const posX = (point.x * scaleX) + (svgRect.left - wrapperRect.left);
         const posY = (point.y * scaleY) + (svgRect.top - wrapperRect.top);
@@ -340,7 +407,6 @@ program.run()`;
   // --- Replay Functionality ---
   if (replayBtn) {
     replayBtn.addEventListener('click', () => {
-      // Reset classes
       climaxContainer.classList.remove('active');
       heartParticlesActive = false;
 
@@ -353,7 +419,6 @@ program.run()`;
       const strokes = calligraphySvg.querySelectorAll('.cursive-stroke');
       strokes.forEach(s => s.classList.remove('animate'));
 
-      // Reset console messages
       if (msg1) msg1.classList.remove('visible');
       if (msg2) msg2.classList.remove('visible');
       if (msg3) msg3.classList.remove('visible');
@@ -362,7 +427,6 @@ program.run()`;
       if (statusText) statusText.textContent = 'در حال تایپ...';
       if (skipBtn) skipBtn.style.display = 'block';
 
-      // Reset terminal
       terminalWindow.style.display = 'flex';
       terminalWindow.classList.remove('fade-out');
 
@@ -374,7 +438,7 @@ program.run()`;
   }
 
   // ==========================================================================
-  // HIGH-PERFORMANCE 60FPS CANVAS PARTICLE ENGINE
+  // HIGH-PERFORMANCE AUDIO-REACTIVE 60FPS CANVAS ENGINE
   // ==========================================================================
   const canvas = document.getElementById('particles-canvas');
   const ctx = canvas.getContext('2d');
@@ -425,7 +489,7 @@ program.run()`;
     });
   }
 
-  // Draw Heart shape on Canvas helper
+  // Draw Heart on Canvas
   function drawCanvasHeart(context, x, y, size, color, opacity) {
     context.save();
     context.translate(x, y);
@@ -434,18 +498,14 @@ program.run()`;
     context.beginPath();
     const topCurveHeight = size * 0.3;
     context.moveTo(0, topCurveHeight);
-    // top left curve
     context.bezierCurveTo(-size / 2, -topCurveHeight, -size, size / 3, 0, size);
-    // top right curve
     context.bezierCurveTo(size, size / 3, size / 2, -topCurveHeight, 0, topCurveHeight);
     context.closePath();
     context.fill();
     context.restore();
   }
 
-  // Parametric Heart Formula for Halo Particles
-  // x = 16 * sin^3(t)
-  // y = -(13 * cos(t) - 5 * cos(2t) - 2 * cos(3t) - cos(4t))
+  // Parametric Heart Formula
   function getHeartPoint(t, scale) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
@@ -455,7 +515,7 @@ program.run()`;
     };
   }
 
-  // Heart Halo Particles (Active during climax)
+  // Heart Halo Particles
   const haloCount = 140;
   const haloParticles = [];
   for (let i = 0; i < haloCount; i++) {
@@ -472,11 +532,29 @@ program.run()`;
     });
   }
 
-  // Main Render Loop
+  // Main Render Loop with Audio Reactivity
   let frame = 0;
   function renderCanvas() {
     frame++;
     ctx.clearRect(0, 0, width, height);
+
+    // Audio-reactive energy calculation & smoothing
+    const targetEnergy = getAudioEnergy(frame);
+    audioEnergy += (targetEnergy - audioEnergy) * 0.14;
+
+    // Modulate DOM elements with live audio energy during climax
+    if (heartParticlesActive) {
+      if (ambientBloom) {
+        ambientBloom.style.transform = `scale(${0.92 + audioEnergy * 0.35})`;
+        ambientBloom.style.opacity = `${0.55 + audioEnergy * 0.45}`;
+      }
+      if (heartStage) {
+        heartStage.style.filter = `drop-shadow(0 0 ${10 + audioEnergy * 22}px rgba(255, 42, 133, ${0.45 + audioEnergy * 0.45}))`;
+      }
+      if (orbitalRing1) {
+        orbitalRing1.style.borderColor = `rgba(255, 80, 160, ${0.18 + audioEnergy * 0.28})`;
+      }
+    }
 
     // 1. Draw Star Dust
     for (let i = 0; i < starsCount; i++) {
@@ -493,11 +571,11 @@ program.run()`;
       const currentOpacity = s.opacity * (0.65 + 0.35 * Math.sin(frame * s.flickerSpeed + s.flickerOffset));
       ctx.save();
       ctx.fillStyle = '#ffffff';
-      ctx.globalAlpha = currentOpacity;
-      ctx.shadowBlur = 6;
+      ctx.globalAlpha = Math.min(currentOpacity + audioEnergy * 0.25, 1);
+      ctx.shadowBlur = 6 + audioEnergy * 8;
       ctx.shadowColor = '#ff65a9';
       ctx.beginPath();
-      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+      ctx.arc(s.x, s.y, s.size * (1 + audioEnergy * 0.2), 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
@@ -505,7 +583,7 @@ program.run()`;
     // 2. Draw Floating Hearts
     for (let i = 0; i < floatingHeartsCount; i++) {
       const h = floatingHearts[i];
-      h.y -= h.vy;
+      h.y -= h.vy * (1 + audioEnergy * 0.35);
       const swayX = h.x + Math.sin(frame * h.swaySpeed + h.swayOffset) * h.swayDist;
 
       if (h.y < -30) {
@@ -513,32 +591,33 @@ program.run()`;
         h.x = Math.random() * width;
       }
 
-      drawCanvasHeart(ctx, swayX, h.y, h.size, h.color, h.opacity);
+      drawCanvasHeart(ctx, swayX, h.y, h.size * (1 + audioEnergy * 0.15), h.color, h.opacity);
     }
 
-    // 3. Draw Heart Halo Particles (during climax)
+    // 3. Draw Heart Halo Particles (Audio-Reactive)
     if (heartParticlesActive) {
       const centerX = width / 2;
-      // Adjust center Y slightly upwards to match the heart SVG position
-      const centerY = height * 0.46;
+      const centerY = height * 0.44;
       const baseScale = Math.min(width, height) * 0.0155;
 
       for (let i = 0; i < haloCount; i++) {
         const p = haloParticles[i];
-        p.t += p.speed;
-        const scale = baseScale * (1 + p.scaleVariation);
+        p.t += p.speed * (1 + audioEnergy * 0.65);
+        const scale = baseScale * (1 + p.scaleVariation + audioEnergy * 0.07);
         const pt = getHeartPoint(p.t, scale);
 
         const currentX = centerX + pt.x + p.jitterX;
         const currentY = centerY + pt.y + p.jitterY;
 
+        const pSize = p.size * (1 + audioEnergy * 0.4);
+
         ctx.save();
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = p.glow;
-        ctx.globalAlpha = 0.85;
+        ctx.shadowBlur = p.glow + audioEnergy * 16;
+        ctx.globalAlpha = 0.85 + audioEnergy * 0.15;
         ctx.beginPath();
-        ctx.arc(currentX, currentY, p.size, 0, Math.PI * 2);
+        ctx.arc(currentX, currentY, pSize, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
@@ -552,4 +631,3 @@ program.run()`;
   initAudio();
 
 })();
-
